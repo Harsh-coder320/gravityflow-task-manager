@@ -26,7 +26,10 @@ export default function RegisterPage() {
     e.preventDefault();
 
     try {
-      await axios.post("http://localhost:5000/api/auth/register", formData);
+      await axios.post(
+        "https://gravityflow-task-manager-production.up.railway.app/api/auth/register",
+        formData,
+      );
 
       alert("Registration successful");
 

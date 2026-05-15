@@ -26,7 +26,7 @@ export default function LoginPage() {
 
     try {
       const { data } = await axios.post(
-        "http://localhost:5000/api/auth/login",
+        "https://gravityflow-task-manager-production.up.railway.app/api/auth/login",
         formData,
       );
 
@@ -41,6 +41,7 @@ export default function LoginPage() {
       }
 
       navigate("/");
+
       window.location.reload();
     } catch (error) {
       console.log(error);
