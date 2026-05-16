@@ -1,7 +1,8 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "https://gravityflow-task-manager-production.up.railway.app/api",
+  baseURL:
+    "https://gravityflow-task-manager-production-793e.up.railway.app/api",
 });
 
 API.interceptors.request.use((req) => {
