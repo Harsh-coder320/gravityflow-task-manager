@@ -87,31 +87,33 @@ export default function AdminDashboard({
           className="w-full p-3 rounded-lg bg-gray-800 mb-4"
         />
 
-        <div className="space-y-4">
-          {filteredMembers.map((member) => (
-            <div
-              key={member._id}
-              className="flex justify-between items-center bg-gray-800 p-4 rounded-xl"
-            >
-              <div>
-                <p className="font-semibold">{member.name}</p>
+        {memberSearch && (
+          <div className="space-y-4">
+            {filteredMembers.map((member) => (
+              <div
+                key={member._id}
+                className="flex justify-between items-center bg-gray-800 p-4 rounded-xl"
+              >
+                <div>
+                  <p className="font-semibold">{member.name}</p>
 
-                <p className="text-sm text-gray-400">{member.email}</p>
+                  <p className="text-sm text-gray-400">{member.email}</p>
 
-                <p className="text-sm text-yellow-400">Role: {member.role}</p>
+                  <p className="text-sm text-yellow-400">Role: {member.role}</p>
+                </div>
+
+                {member.role !== "Admin" && (
+                  <button
+                    onClick={() => handleMakeAdmin(member._id)}
+                    className="bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded-lg"
+                  >
+                    Make Admin
+                  </button>
+                )}
               </div>
-
-              {member.role !== "Admin" && (
-                <button
-                  onClick={() => handleMakeAdmin(member._id)}
-                  className="bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded-lg"
-                >
-                  Make Admin
-                </button>
-              )}
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* CREATE PROJECT */}
@@ -206,20 +208,22 @@ export default function AdminDashboard({
               className="w-full p-3 rounded-lg bg-gray-800"
             />
 
-            <select
-              name="assignedTo"
-              value={formData.assignedTo}
-              onChange={handleChange}
-              className="p-3 rounded-lg bg-gray-800"
-            >
-              <option value="">Assign User</option>
+            {assignSearch && (
+              <select
+                name="assignedTo"
+                value={formData.assignedTo}
+                onChange={handleChange}
+                className="p-3 rounded-lg bg-gray-800"
+              >
+                <option value="">Assign User</option>
 
-              {filteredAssignUsers.map((user) => (
-                <option key={user._id} value={user._id}>
-                  {user.name}
-                </option>
-              ))}
-            </select>
+                {filteredAssignUsers.map((user) => (
+                  <option key={user._id} value={user._id}>
+                    {user.name}
+                  </option>
+                ))}
+              </select>
+            )}
           </div>
 
           <select
