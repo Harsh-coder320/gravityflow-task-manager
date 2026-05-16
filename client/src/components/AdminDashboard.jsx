@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 import TaskCard from "./TaskCard";
 import AnalyticsCards from "./AnalyticsCards";
 
@@ -20,6 +22,10 @@ export default function AdminDashboard({
   removeTask,
   user,
 }) {
+  const [memberSearch, setMemberSearch] = useState("");
+
+  const [assignSearch, setAssignSearch] = useState("");
+
   const handleMakeAdmin = async (id) => {
     try {
       await makeAdmin(id);
@@ -33,6 +39,14 @@ export default function AdminDashboard({
       alert(error.response?.data?.message || "Failed");
     }
   };
+
+  const filteredMembers = users.filter((member) =>
+    member.name.toLowerCase().includes(memberSearch.toLowerCase()),
+  );
+
+  const filteredAssignUsers = users.filter((member) =>
+    member.name.toLowerCase().includes(assignSearch.toLowerCase()),
+  );
 
   return (
     <div className="min-h-screen bg-gray-900 text-white p-4 md:p-8">
@@ -65,8 +79,16 @@ export default function AdminDashboard({
           Team Members
         </h2>
 
+        <input
+          type="text"
+          placeholder="Search Members..."
+          value={memberSearch}
+          onChange={(e) => setMemberSearch(e.target.value)}
+          className="w-full p-3 rounded-lg bg-gray-800 mb-4"
+        />
+
         <div className="space-y-4">
-          {users.map((member) => (
+          {filteredMembers.map((member) => (
             <div
               key={member._id}
               className="flex justify-between items-center bg-gray-800 p-4 rounded-xl"
@@ -175,20 +197,30 @@ export default function AdminDashboard({
             <option>Completed</option>
           </select>
 
-          <select
-            name="assignedTo"
-            value={formData.assignedTo}
-            onChange={handleChange}
-            className="p-3 rounded-lg bg-gray-800"
-          >
-            <option value="">Assign User</option>
+          <div className="flex flex-col gap-2">
+            <input
+              type="text"
+              placeholder="Search Assign User..."
+              value={assignSearch}
+              onChange={(e) => setAssignSearch(e.target.value)}
+              className="w-full p-3 rounded-lg bg-gray-800"
+            />
 
-            {users.map((user) => (
-              <option key={user._id} value={user._id}>
-                {user.name}
-              </option>
-            ))}
-          </select>
+            <select
+              name="assignedTo"
+              value={formData.assignedTo}
+              onChange={handleChange}
+              className="p-3 rounded-lg bg-gray-800"
+            >
+              <option value="">Assign User</option>
+
+              {filteredAssignUsers.map((user) => (
+                <option key={user._id} value={user._id}>
+                  {user.name}
+                </option>
+              ))}
+            </select>
+          </div>
 
           <select
             name="project"
