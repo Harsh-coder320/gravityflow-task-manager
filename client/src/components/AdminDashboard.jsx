@@ -50,8 +50,13 @@ export default function AdminDashboard({
 
   return (
     <div className="min-h-screen bg-gray-900 text-white p-4 md:p-8">
+      {/* HEADER */}
       <div className="flex flex-col md:flex-row justify-between items-center mb-10 gap-4">
-        <h1 className="text-3xl md:text-5xl font-bold">Admin Dashboard</h1>
+        <div>
+          <h1 className="text-3xl md:text-5xl font-bold">Admin Dashboard</h1>
+
+          <p className="text-gray-400 mt-2">Welcome back, {user?.name}</p>
+        </div>
 
         <button
           onClick={() => {
@@ -66,6 +71,7 @@ export default function AdminDashboard({
         </button>
       </div>
 
+      {/* ANALYTICS */}
       <AnalyticsCards
         tasks={tasks}
         todoTasks={todoTasks}
@@ -73,7 +79,7 @@ export default function AdminDashboard({
         completedTasks={completedTasks}
       />
 
-      {/* TEAM MEMBERS SECTION */}
+      {/* TEAM MEMBERS */}
       <div className="bg-black p-6 rounded-2xl mb-8">
         <h2 className="text-2xl font-bold mb-4 text-purple-400">
           Team Members
@@ -177,6 +183,7 @@ export default function AdminDashboard({
         />
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+          {/* PRIORITY */}
           <select
             name="priority"
             value={formData.priority}
@@ -188,6 +195,7 @@ export default function AdminDashboard({
             <option>High</option>
           </select>
 
+          {/* STATUS */}
           <select
             name="status"
             value={formData.status}
@@ -199,7 +207,8 @@ export default function AdminDashboard({
             <option>Completed</option>
           </select>
 
-          <div className="flex flex-col gap-2">
+          {/* ASSIGN USER SEARCH */}
+          <div className="relative">
             <input
               type="text"
               placeholder="Search Assign User..."
@@ -209,23 +218,30 @@ export default function AdminDashboard({
             />
 
             {assignSearch && (
-              <select
-                name="assignedTo"
-                value={formData.assignedTo}
-                onChange={handleChange}
-                className="p-3 rounded-lg bg-gray-800"
-              >
-                <option value="">Assign User</option>
+              <div className="absolute z-10 w-full bg-gray-800 rounded-lg mt-2 max-h-48 overflow-y-auto shadow-lg">
+                {filteredAssignUsers.map((member) => (
+                  <div
+                    key={member._id}
+                    onClick={() => {
+                      handleChange({
+                        target: {
+                          name: "assignedTo",
+                          value: member._id,
+                        },
+                      });
 
-                {filteredAssignUsers.map((user) => (
-                  <option key={user._id} value={user._id}>
-                    {user.name}
-                  </option>
+                      setAssignSearch(member.name);
+                    }}
+                    className="p-3 hover:bg-gray-700 cursor-pointer border-b border-gray-700"
+                  >
+                    {member.name}
+                  </div>
                 ))}
-              </select>
+              </div>
             )}
           </div>
 
+          {/* PROJECT SELECT */}
           <select
             name="project"
             value={formData.project}
@@ -250,8 +266,9 @@ export default function AdminDashboard({
         </button>
       </form>
 
-      {/* TASK SECTIONS */}
+      {/* TASK BOARDS */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* TODO */}
         <div className="bg-black p-6 rounded-2xl shadow-lg">
           <h2 className="text-2xl font-bold mb-6 text-blue-400">Todo</h2>
 
@@ -270,6 +287,7 @@ export default function AdminDashboard({
           )}
         </div>
 
+        {/* IN PROGRESS */}
         <div className="bg-black p-6 rounded-2xl shadow-lg">
           <h2 className="text-2xl font-bold mb-6 text-yellow-400">
             In Progress
@@ -290,6 +308,7 @@ export default function AdminDashboard({
           )}
         </div>
 
+        {/* COMPLETED */}
         <div className="bg-black p-6 rounded-2xl shadow-lg">
           <h2 className="text-2xl font-bold mb-6 text-green-400">Completed</h2>
 
