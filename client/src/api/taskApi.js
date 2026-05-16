@@ -32,3 +32,6 @@ export const getProjects = () => API.get("/projects");
 
 export const createProject = (projectData) =>
   API.post("/projects", projectData);
+
+// NEW FEATURE
+export const makeAdmin = (id) => API.put(`/auth/make-admin/${id}`);

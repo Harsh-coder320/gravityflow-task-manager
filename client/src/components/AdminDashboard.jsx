@@ -1,6 +1,8 @@
 import TaskCard from "./TaskCard";
 import AnalyticsCards from "./AnalyticsCards";
 
+import { makeAdmin } from "../api/taskApi";
+
 export default function AdminDashboard({
   tasks,
   todoTasks,
@@ -18,6 +20,20 @@ export default function AdminDashboard({
   removeTask,
   user,
 }) {
+  const handleMakeAdmin = async (id) => {
+    try {
+      await makeAdmin(id);
+
+      alert("User promoted to Admin successfully");
+
+      window.location.reload();
+    } catch (error) {
+      console.log(error);
+
+      alert(error.response?.data?.message || "Failed");
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-900 text-white p-4 md:p-8">
       <div className="flex flex-col md:flex-row justify-between items-center mb-10 gap-4">
@@ -43,6 +59,40 @@ export default function AdminDashboard({
         completedTasks={completedTasks}
       />
 
+      {/* TEAM MEMBERS SECTION */}
+      <div className="bg-black p-6 rounded-2xl mb-8">
+        <h2 className="text-2xl font-bold mb-4 text-purple-400">
+          Team Members
+        </h2>
+
+        <div className="space-y-4">
+          {users.map((member) => (
+            <div
+              key={member._id}
+              className="flex justify-between items-center bg-gray-800 p-4 rounded-xl"
+            >
+              <div>
+                <p className="font-semibold">{member.name}</p>
+
+                <p className="text-sm text-gray-400">{member.email}</p>
+
+                <p className="text-sm text-yellow-400">Role: {member.role}</p>
+              </div>
+
+              {member.role !== "Admin" && (
+                <button
+                  onClick={() => handleMakeAdmin(member._id)}
+                  className="bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded-lg"
+                >
+                  Make Admin
+                </button>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* CREATE PROJECT */}
       <form
         onSubmit={handleProjectSubmit}
         className="bg-black p-6 rounded-2xl mb-8 max-w-3xl mx-auto"
@@ -76,6 +126,7 @@ export default function AdminDashboard({
         </button>
       </form>
 
+      {/* CREATE TASK */}
       <form
         onSubmit={handleSubmit}
         className="bg-black p-6 rounded-2xl mb-8 max-w-3xl mx-auto"
@@ -163,6 +214,7 @@ export default function AdminDashboard({
         </button>
       </form>
 
+      {/* TASK SECTIONS */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <div className="bg-black p-6 rounded-2xl shadow-lg">
           <h2 className="text-2xl font-bold mb-6 text-blue-400">Todo</h2>

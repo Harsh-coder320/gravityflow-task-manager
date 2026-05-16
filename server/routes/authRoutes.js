@@ -1,39 +1,38 @@
-const express = require("express");
+router.put("/make-admin/:id", protect, async (req, res) => {
+  try {
+    if (req.user.role !== "Admin") {
+      return res.status(403).json({
+        message: "Only admins can make other admins",
+      });
+    }
 
-const {
-  registerUser,
-  loginUser,
-  getUsers,
-} = require("../controllers/authController");
+    const User = require("../models/User");
 
-const { protect } = require("../middleware/authMiddleware");
+    const user = await User.findByIdAndUpdate(
+      req.params.id,
+      {
+        role: "Admin",
+      },
+      {
+        new: true,
+      },
+    );
 
-const router = express.Router();
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found",
+      });
+    }
 
-router.post("/register", registerUser);
+    res.json({
+      message: "User promoted to Admin successfully",
+      user,
+    });
+  } catch (error) {
+    console.log(error);
 
-router.post("/login", loginUser);
-
-router.get("/users", protect, getUsers);
-
-router.get("/profile", protect, (req, res) => {
-  res.json(req.user);
+    res.status(500).json({
+      message: "Server Error",
+    });
+  }
 });
-
-router.put("/make-admin", async (req, res) => {
-  const user = await require("../models/User").findOneAndUpdate(
-    {
-      email: "harsh@gmail.com",
-    },
-    {
-      role: "Admin",
-    },
-    {
-      new: true,
-    },
-  );
-
-  res.json(user);
-});
-
-module.exports = router;
