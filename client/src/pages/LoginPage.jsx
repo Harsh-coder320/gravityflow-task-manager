@@ -26,7 +26,7 @@ export default function LoginPage() {
 
     try {
       const { data } = await axios.post(
-        "https://gravityflow-task-manager-production.up.railway.app/api/auth/login",
+        "https://gravityflow-task-manager-production-793e.up.railway.app/api/auth/login",
         formData,
       );
 
