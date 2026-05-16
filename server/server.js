@@ -16,7 +16,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: "https://gravityflow-task-manager-production-916d.up.railway.app",
+    origin: true,
     credentials: true,
   }),
 );
