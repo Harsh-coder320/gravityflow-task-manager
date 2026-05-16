@@ -16,7 +16,10 @@ const app = express();
 
 app.use(
   cors({
-    origin: "https://gravityflow-task-manager-gny9.vercel.app",
+    origin: [
+      "https://gravityflow-task-manager-gny9.vercel.app",
+      "https://gravityflow-task-manager-production-2534.up.railway.app",
+    ],
     credentials: true,
   }),
 );
