@@ -14,14 +14,8 @@ connectDB();
 
 const app = express();
 
-app.use(
-  cors({
-    origin: function (origin, callback) {
-      callback(null, true);
-    },
-    credentials: true,
-  }),
-);
+// Simple CORS setup
+app.use(cors());
 
 app.use(express.json());
 
