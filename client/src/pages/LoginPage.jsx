@@ -46,7 +46,7 @@ export default function LoginPage() {
     } catch (error) {
       console.log(error);
 
-      alert("Login failed");
+      alert(error.response?.data?.message || "Login failed");
     }
   };
 
