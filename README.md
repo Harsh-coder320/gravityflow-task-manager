@@ -352,7 +352,7 @@ This project demonstrates:
 
 ## Harsh Deo
 
-Full Stack Developer
+Full Stack Developer, AI/ML Engineer, Data Science
 
 GitHub:
 [https://github.com/Harsh-coder320](https://github.com/Harsh-coder320)
